@@ -13,6 +13,9 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const mongoose = require('mongoose');
 
+// looks in routes folder and grabs the index.js by default
+const routes = require('./routes/');
+
 const MONGODB_HOST = process.env.MONGODB_HOST || 'localhost';
 const MONGODB_PORT = process.env.MONGODB_PORT || 27017;
 const MONGODB_USER = process.env.MONGODB_USER || '';
@@ -44,7 +47,7 @@ app.use(nodeSassMiddleware({
 // able to use static files
 // app.use(express.static('public'));
 
-// app.use(routes);
+app.use(routes);
 
 mongoose.connect(MONGODB_URL);
 

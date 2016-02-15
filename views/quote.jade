@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title #{title}
+  body
+    .container
+      h1 Contact
+      form(method='POST')
+        div
+          label Name
+            input(type='text' name='name' placeholder='Name')
+        div
+          label Email
+            input(type='email' name='email' placeholder='Email')
+        div
+          label Message
+            textarea(name='message' placeholder='Message')
+        div
+          input(type='submit', value='Contact Us!')
