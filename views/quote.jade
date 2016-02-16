@@ -8,15 +8,20 @@ html
       form(method='POST')
         div
           label Symbol
-            input(type='text' name='name' placeholder='AAPL')
+            input(type='text' name='symbol' placeholder='AAPL')
             input(type='submit', value='Quote')
       table(border="1")
         tr
           th Symbol
+          th Name
           th Price
-          each stuff in stuffs
-            tr
-              td= stuff.symbol
-              td= stuff.price
+         if stuffs
+          //-   each stuff in stuffs
+          tr
+            td= stuffs.Symbol
+            td= stuffs.Name
+            td= stuffs.LastPrice
+                <td><button onclick="remove(stuff);">Remove</button></td>
+    script(type="text/javascript" src="../public/controllers/core.js")
 
 
