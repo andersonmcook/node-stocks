@@ -33,33 +33,15 @@ module.exports.new = (req, res) => {
     });
 
     res.redirect(`/quote/${detail}`);
-
-    // if (req.body.Quantity) {
-    //   Stock.findOne().sort('-_id').update({Quantity: req.body.Quantity}, (err, raw) => {
-    //     if (err) throw err;
-    //     console.log("raw", raw);
-    //   });
-
-    // } else {
-    //   dbStock.save((err, _stock) => {
-    //     if (err) throw err;
-    //     console.log("newObj", _stock);
-    //     // res.render('quote', {stuffs: _stock});
-    //     res.redirect(`/quote/${detail}`);
-    //   });
-    // }
-
-    // console.log("stuffs", stuffs);
-    // const stuffs = response;
-    // res.render('quote', {stuffs: response});
-    // res.render('quote', {stuffs: stuffs});
   });
 };
 
 module.exports.detail = (req, res) => {
+  console.log('detail');
   const detail = req.params.detail;
   let url = `http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=${detail}`;
   request.get(url, (err, response, html) => {
+    console.log('request');
     if (err) throw err;
     response.body = JSON.parse(response.body);
 
@@ -70,10 +52,11 @@ module.exports.detail = (req, res) => {
       Quantity: 0
     }
 
-    // let exists;
     Stock.findOne({'Symbol': response.body.Symbol}, 'Quantity', (err, data) => {
+      console.log('findOne', data);
+      stock.Quantity = data.Quantity;
       if (err) throw err;
-      if (data) {
+      if (data && req.body.Quantity) {
         Stock.findOneAndUpdate({_id: data._id}, {$set: {Quantity: parseInt(data.Quantity) + parseInt(req.body.Quantity)}}, {new: true}, (err, updated) => {
           if (err) throw err;
           console.log('updated', updated);
@@ -94,13 +77,7 @@ module.exports.detail = (req, res) => {
       } else {
         res.render('quote', {stuffs: stock});
       }
-
-
-
-
     });
-
-
   });
 };
 
