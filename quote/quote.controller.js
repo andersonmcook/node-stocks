@@ -29,7 +29,7 @@ module.exports.new = (req, res) => {
       Symbol: response.body.Symbol,
       Name: response.body.Name,
       LastPrice: response.body.LastPrice,
-      Quantity: null
+      Quantity: 0
     });
 
     if (req.body.Quantity) {
@@ -54,7 +54,7 @@ module.exports.new = (req, res) => {
   });
 };
 
-module.exports.buy = (req, res) => {
+module.exports.detail = (req, res) => {
   const detail = req.params.detail;
   let url = `http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=${detail}`;
   request.get(url, (err, response, html) => {
