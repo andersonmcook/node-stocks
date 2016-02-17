@@ -70,30 +70,36 @@ module.exports.detail = (req, res) => {
       Quantity: 0
     }
 
-    // console.log('stock find', Stock.findOne({'Symbol': response.body.Symbol}));
+    // let exists;
+    Stock.findOne({'Symbol': response.body.Symbol}, 'Quantity', (err, data) => {
+      if (err) throw err;
+      if (data) {
+        Stock.findOneAndUpdate({_id: data._id}, {$set: {Quantity: parseInt(data.Quantity) + parseInt(req.body.Quantity)}}, {new: true}, (err, updated) => {
+          if (err) throw err;
+          console.log('updated', updated);
+          res.render('quote', {stuffs: updated});
+        });
+      } else if (req.body.Quantity !== undefined) {
+        const dbStock = new Stock({
+          Symbol: response.body.Symbol,
+          Name: response.body.Name,
+          LastPrice: response.body.LastPrice,
+          Quantity: req.body.Quantity/* + found.Quantity*/
+        });
+        dbStock.save((err, _stock) => {
+          if (err) throw err;
+          console.log("_stock", _stock);
+          res.render(`quote`, {stuffs: _stock});
+        });
+      } else {
+        res.render('quote', {stuffs: stock});
+      }
 
-    if (req.body.Quantity !== undefined) {
-      // const found = Stock.findOne({'Symbol': response.body.Symbol});
-      const dbStock = new Stock({
-        Symbol: response.body.Symbol,
-        Name: response.body.Name,
-        LastPrice: response.body.LastPrice,
-        Quantity: req.body.Quantity/* + found.Quantity*/
-      });
 
-      dbStock.save((err, _stock) => {
-        if (err) throw err;
-        console.log("newObj", _stock);
-        res.render(`quote`, {stuffs: _stock});
-      });
 
-      // Stock.findOne().sort('-_id').update({Quantity: req.body.Quantity}, (err, raw) => {
-      //     if (err) throw err;
-      //     console.log("raw", raw);
 
-    } else {
-      res.render('quote', {stuffs: stock});
-    }
+    });
+
 
   });
 };
