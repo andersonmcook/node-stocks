@@ -10,9 +10,11 @@ html
             th Name
             th Price
             th Quantity
+            th Value
               each stock in portfolio
                 tr
                   td= stock.Symbol
                   td= stock.Name
                   td= stock.LastPrice
                   td= stock.Quantity
+                  td= "$" + stock.LastPrice * stock.Quantity
