@@ -5,23 +5,29 @@ html
   body
     .container
       h1 Get Stock Quote
-      form(method='POST')
+      form(method='POST' action='/quote/')
         div
           label Symbol
-            input(type='text' name='symbol' placeholder='AAPL')
-            input(type='submit', value='Quote')
+            input(type='text' name='Symbol' placeholder='AAPL')
+            input(type='submit' value='Quote')
       table(border="1")
         tr
           th Symbol
           th Name
           th Price
+          th Quantity
          if stuffs
           //-   each stuff in stuffs
           tr
-            td= stuffs.Symbol
+            td#symbol= stuffs.Symbol
             td= stuffs.Name
             td= stuffs.LastPrice
-                <td><button onclick="remove(stuff);">Remove</button></td>
-    script(type="text/javascript" src="../public/controllers/core.js")
+
+          form(method='POST')
+            input(type='text' name='Quantity' placeholder='100')
+            input(type='submit' value='Buy')
+            //- <td><form method='POST'><input type='text' name='Quantity' placeholder='99'><input type='submit' value='BUY!'></form></td>
+                //- <td><button onclick="remove(#{stuffs});">Remove</button></td>
+    //- script(type="text/javascript" src="../public/controllers/core.js")
 
 
