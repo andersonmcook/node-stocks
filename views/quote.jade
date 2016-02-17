@@ -10,22 +10,22 @@ html
           label Symbol
             input(type='text' name='Symbol' placeholder='AAPL')
             input(type='submit' value='Quote')
-      table(border="1")
-        tr
-          th Symbol
-          th Name
-          th Price
-          th Quantity
-         if stuffs
-          //-   each stuff in stuffs
+     if stuffs
+        table(border="1")
           tr
-            td#symbol= stuffs.Symbol
-            td= stuffs.Name
-            td= stuffs.LastPrice
+            th Symbol
+            th Name
+            th Price
+            th Quantity
+            //-   each stuff in stuffs
+            tr
+              td#symbol= stuffs.Symbol
+              td= stuffs.Name
+              td= stuffs.LastPrice
 
-          form(method='POST')
-            input(type='text' name='Quantity' placeholder='100')
-            input(type='submit' value='Buy')
+            form(method='POST')
+              input(type='text' name='Quantity' placeholder='100')
+              input(type='submit' value='Buy')
             //- <td><form method='POST'><input type='text' name='Quantity' placeholder='99'><input type='submit' value='BUY!'></form></td>
                 //- <td><button onclick="remove(#{stuffs});">Remove</button></td>
     //- script(type="text/javascript" src="../public/controllers/core.js")
