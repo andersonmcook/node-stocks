@@ -50,11 +50,22 @@ module.exports.detail = (req, res) => {
       Name: response.body.Name,
       LastPrice: response.body.LastPrice,
       Quantity: 0
-    }
+    };
 
+    res.render('quote', {stuffs: stock});
+  });
+};
+
+module.exports.buy = (req, res) => {
+const detail = req.params.detail;
+  let url = `http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=${detail}`;
+  request.get(url, (err, response, html) => {
+    console.log('request');
+    if (err) throw err;
+    response.body = JSON.parse(response.body);
     Stock.findOne({'Symbol': response.body.Symbol}, 'Quantity', (err, data) => {
       console.log('findOne', data);
-      stock.Quantity = data.Quantity;
+      // stock.Quantity = data.Quantity;
       if (err) throw err;
       if (data && req.body.Quantity) {
         Stock.findOneAndUpdate({_id: data._id}, {$set: {Quantity: parseInt(data.Quantity) + parseInt(req.body.Quantity)}}, {new: true}, (err, updated) => {
@@ -67,15 +78,13 @@ module.exports.detail = (req, res) => {
           Symbol: response.body.Symbol,
           Name: response.body.Name,
           LastPrice: response.body.LastPrice,
-          Quantity: req.body.Quantity/* + found.Quantity*/
+          Quantity: req.body.Quantity
         });
         dbStock.save((err, _stock) => {
           if (err) throw err;
           console.log("_stock", _stock);
           res.render(`quote`, {stuffs: _stock});
         });
-      } else {
-        res.render('quote', {stuffs: stock});
       }
     });
   });
