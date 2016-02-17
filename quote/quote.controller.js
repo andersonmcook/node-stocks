@@ -32,20 +32,22 @@ module.exports.new = (req, res) => {
       Quantity: 0
     });
 
-    if (req.body.Quantity) {
-      Stock.findOne().sort('-_id').update({Quantity: req.body.Quantity}, (err, raw) => {
-        if (err) throw err;
-        console.log("raw", raw);
-      });
+    res.redirect(`/quote/${detail}`);
 
-    } else {
-      dbStock.save((err, _stock) => {
-        if (err) throw err;
-        console.log("newObj", _stock);
-        // res.render('quote', {stuffs: _stock});
-        res.redirect(`/quote/${detail}`);
-      });
-    }
+    // if (req.body.Quantity) {
+    //   Stock.findOne().sort('-_id').update({Quantity: req.body.Quantity}, (err, raw) => {
+    //     if (err) throw err;
+    //     console.log("raw", raw);
+    //   });
+
+    // } else {
+    //   dbStock.save((err, _stock) => {
+    //     if (err) throw err;
+    //     console.log("newObj", _stock);
+    //     // res.render('quote', {stuffs: _stock});
+    //     res.redirect(`/quote/${detail}`);
+    //   });
+    // }
 
     // console.log("stuffs", stuffs);
     // const stuffs = response;
@@ -60,13 +62,35 @@ module.exports.detail = (req, res) => {
   request.get(url, (err, response, html) => {
     if (err) throw err;
     response.body = JSON.parse(response.body);
+
     const stock = {
       Symbol: response.body.Symbol,
       Name: response.body.Name,
-      LastPrice: response.body.LastPrice
+      LastPrice: response.body.LastPrice,
+      Quantity: 0
     }
-    res.render(`quote`, {stuffs: stock});
+    if (req.body.Quantity !== undefined) {
+      const dbStock = new Stock({
+        Symbol: response.body.Symbol,
+        Name: response.body.Name,
+        LastPrice: response.body.LastPrice,
+        Quantity: req.body.Quantity
+      });
 
-  })
+      dbStock.save((err, _stock) => {
+        if (err) throw err;
+        console.log("newObj", _stock);
+        res.render(`quote`, {stuffs: _stock});
+      });
+
+      // Stock.findOne().sort('-_id').update({Quantity: req.body.Quantity}, (err, raw) => {
+      //     if (err) throw err;
+      //     console.log("raw", raw);
+
+    } else {
+      res.render('quote', {stuffs: stock});
+    }
+
+  });
 };
 
