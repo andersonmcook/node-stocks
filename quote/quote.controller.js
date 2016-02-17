@@ -69,12 +69,16 @@ module.exports.detail = (req, res) => {
       LastPrice: response.body.LastPrice,
       Quantity: 0
     }
+
+    // console.log('stock find', Stock.findOne({'Symbol': response.body.Symbol}));
+
     if (req.body.Quantity !== undefined) {
+      // const found = Stock.findOne({'Symbol': response.body.Symbol});
       const dbStock = new Stock({
         Symbol: response.body.Symbol,
         Name: response.body.Name,
         LastPrice: response.body.LastPrice,
-        Quantity: req.body.Quantity
+        Quantity: req.body.Quantity/* + found.Quantity*/
       });
 
       dbStock.save((err, _stock) => {
