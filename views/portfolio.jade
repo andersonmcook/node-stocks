@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title
+  body
+    .container
+      table(border="1")
+          tr
+            th Symbol
+            th Name
+            th Price
+            th Quantity
+              each stock in portfolio
+                tr
+                  td= stock.Symbol
+                  td= stock.Name
+                  td= stock.LastPrice
+                  td= stock.Quantity
